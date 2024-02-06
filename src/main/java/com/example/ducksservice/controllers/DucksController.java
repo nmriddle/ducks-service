@@ -21,7 +21,7 @@ public class DucksController {
     @PostMapping
     public void add(@RequestBody DuckData duck) {
         try {
-            ducksRepository.add(duck);
+            ducksRepository.addDuck(duck);
         } catch (IOException e) {
             System.out.println("Could not add.");
         }
@@ -30,7 +30,7 @@ public class DucksController {
     @GetMapping
     public List<DuckData> findAll() {
         try {
-            return ducksRepository.findAll();
+            return ducksRepository.getAllDucks();
         } catch (IOException e) {
             return null;
         }
@@ -39,7 +39,7 @@ public class DucksController {
     @GetMapping("/find")
     public DuckData find(@RequestParam int id) {
         try {
-            return ducksRepository.find(id);
+            return ducksRepository.getDuck(id);
         } catch (IOException e) {
             return null;
         }
@@ -48,7 +48,7 @@ public class DucksController {
     @PostMapping("/{id}/image")
     public void updateImage(@RequestParam int id, @RequestParam MultipartFile file) {
         try {
-            ducksRepository.updateImage(id, file);
+            ducksRepository.uploadImage(id, file);
         } catch (IOException e) {
             System.out.println("Update image failed.");
         }
@@ -57,7 +57,7 @@ public class DucksController {
     @GetMapping("/{id}/image")
     public byte[] getImage(@RequestParam int id) {
         try {
-            return ducksRepository.getImage(id);
+            return ducksRepository.downloadImage(id);
         } catch (IOException e) {
             return null;
         }
@@ -66,7 +66,7 @@ public class DucksController {
     @PostMapping("/{id}/audio")
     public void updateAudio(@RequestParam int id, @RequestParam MultipartFile file) {
         try {
-            ducksRepository.updateAudio(id, file);
+            ducksRepository.uploadAudio(id, file);
         } catch (IOException e) {
             System.out.println("Update audio failed.");
         }
@@ -75,7 +75,7 @@ public class DucksController {
     @GetMapping("/{id}/audio")
     public byte[] getAudio(@RequestParam int id) {
         try {
-            return ducksRepository.getAudio(id);
+            return ducksRepository.downloadAudio(id);
         } catch (IOException e) {
             return null;
         }

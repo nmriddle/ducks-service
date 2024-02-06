@@ -45,14 +45,14 @@ public class DucksRepository {
         Files.write(path, content.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
     }
 
-    public boolean add(DuckData duckData) throws IOException {
+    public boolean addDuck(DuckData duckData) throws IOException {
         Path path = Paths.get(DATABASE_NAME);
         String data = duckData.toLine();
         appendToFile(path, data + NEW_LINE);
         return true;
     }
 
-    public boolean updateImage(int id, MultipartFile file) throws IOException {
+    public boolean uploadImage(int id, MultipartFile file) throws IOException {
         System.out.println(file.getOriginalFilename());
         System.out.println(file.getContentType());
 
@@ -63,14 +63,14 @@ public class DucksRepository {
         return true;
     }
 
-    public byte[] getImage(int id) throws IOException {
+    public byte[] downloadImage(int id) throws IOException {
         String fileExtension = ".png";
         Path path = Paths.get(IMAGES_FOLDER_PATH + id + fileExtension);
         byte[] image = Files.readAllBytes(path);
         return image;
     }
 
-    public boolean updateAudio(int id, MultipartFile file) throws IOException {
+    public boolean uploadAudio(int id, MultipartFile file) throws IOException {
         System.out.println(file.getOriginalFilename());
         System.out.println(file.getContentType());
 
@@ -81,14 +81,14 @@ public class DucksRepository {
         return true;
     }
 
-    public byte[] getAudio(int id) throws IOException {
+    public byte[] downloadAudio(int id) throws IOException {
         String fileExtension = ".mp3";
         Path path = Paths.get(AUDIOS_FOLDER_PATH + id + fileExtension);
         byte[] audio = Files.readAllBytes(path);
         return audio;
     }
 
-    public List<DuckData> findAll() throws IOException {
+    public List<DuckData> getAllDucks() throws IOException {
         List<DuckData> result = new ArrayList<>();
         Path path = Paths.get(DATABASE_NAME);
         List<String> data = Files.readAllLines(path);
@@ -99,8 +99,8 @@ public class DucksRepository {
         return result;
     }
 
-    public DuckData find(int id) throws IOException {
-        List<DuckData> ducks = findAll();
+    public DuckData getDuck(int id) throws IOException {
+        List<DuckData> ducks = getAllDucks();
         for (DuckData duck : ducks) {
             if (duck.id() == id) {
                 return duck;
@@ -110,7 +110,7 @@ public class DucksRepository {
     }
 
     public List<DuckData> search(String type) throws IOException {
-        List<DuckData> ducks = findAll();
+        List<DuckData> ducks = getAllDucks();
         List<DuckData> result = new ArrayList<>();
         for (DuckData duck : ducks) {
             if (type != null && !duck.type().equalsIgnoreCase(type)) {
